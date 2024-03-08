@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'ghostwriter=ghost_writer.main:main',
+            'ghost=ghost_writer.main:main',
         ],
     },
 )
