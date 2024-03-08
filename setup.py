@@ -9,4 +9,9 @@ setup(
             'ghost=ghost_writer.main:main',
         ],
     },
+    extras_require={
+        'dev': [
+            'pytest',
+        ],
+    },
 )
