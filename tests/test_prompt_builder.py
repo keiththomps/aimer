@@ -1,13 +1,13 @@
 import os
 import tempfile
-from .prompt_builder import build_prompt
+from ghost_writer.prompt_builder import build_prompt
 
 def test_build_prompt_with_multiple_files():
-    with tempfile.NamedTemporaryFile(delete=False, delete_on_close=False) as temp1:
+    with tempfile.NamedTemporaryFile(delete=False) as temp1:
         temp1.write(b'This is a file from the prompt.')
         temp1_name = temp1.name
 
-    with tempfile.NamedTemporaryFile(delete=False, delete_on_close=False) as temp2:
+    with tempfile.NamedTemporaryFile(delete=False) as temp2:
         temp2.write(b'This is a file path passed in.')
         temp2_name = temp2.name
 
@@ -23,7 +23,7 @@ def test_build_prompt_with_multiple_files():
     os.remove(temp2_name)
 
 def test_build_prompt_with_relative_file_path():
-    with tempfile.NamedTemporaryFile(dir="./temp", delete=False, delete_on_close=False) as temp1:
+    with tempfile.NamedTemporaryFile(dir="./temp", delete=False) as temp1:
         temp1.write(b'This is a file from the prompt.')
         relative_name = temp1.name
 

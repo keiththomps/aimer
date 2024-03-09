@@ -1,0 +1,32 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "ghost_writer"
+authors = [{name = "Keith Thompson", email = "keiththomps@hey.com"}]
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+dynamic = ["version", "description"]
+dependencies = [
+  "anthropic >=0.19.0,<1",
+  "click >=8.1.7,<9",
+  "openai >=1.13.3,<2",
+]
+
+[project.urls]
+Homepage = "https://github.com/keiththomps/ghost_writer"
+Source = "https://github.com/keiththomps/ghost_writer"
+Issues = "https://github.com/keiththomps/ghost_writer/issues"
+
+[project.scripts]
+ghost = "ghost_writer:main"
+
+[project.optional-dependencies]
+test = ["pytest"]
+dist = ["twine", "build"]
