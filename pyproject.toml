@@ -25,8 +25,8 @@ Source = "https://github.com/keiththomps/ghost_writer"
 Issues = "https://github.com/keiththomps/ghost_writer/issues"
 
 [project.scripts]
-ghost = "ghost_writer:main"
+ghost = "ghost_writer:cli.cli"
 
 [project.optional-dependencies]
-test = ["pytest"]
+dev = ["pytest", "black", "mypy", "pylint"]
 dist = ["twine", "build"]
