@@ -3,7 +3,12 @@ import pytest
 from pathlib import Path
 from tempfile import TemporaryDirectory, NamedTemporaryFile
 
-from ghost_writer.prompts import build_prompt, fetch_system_prompt, build_system_prompt
+from ghost_writer.prompts import (
+    build_prompt,
+    fetch_system_prompt,
+    build_system_prompt,
+    extract_paths,
+)
 
 
 def test_build_system_prompt():
@@ -45,10 +50,13 @@ def test_build_prompt_with_multiple_files():
 
     system_prompt = "System prompt"
     user_prompt = f"User prompt with file path: {temp1_name}"
+    function_definitions = "This is a function definition."
     files = [temp2_name]
 
-    expected_prompt = f"System prompt\n\nUser prompt with file path: {temp1_name}\n\n--- {temp1_name}\n\nThis is a file from the prompt.\n\n--- {temp2_name}\n\nThis is a file path passed in."
-    actual_prompt = build_prompt(system_prompt, user_prompt, files)
+    expected_prompt = f"System prompt\n\nUser prompt with file path: {temp1_name}\n\nThis is a function definition.\n\n--- {temp1_name}\n\nThis is a file from the prompt.\n\n--- {temp2_name}\n\nThis is a file path passed in."
+    actual_prompt = build_prompt(
+        system_prompt, user_prompt, function_definitions, files
+    )
 
     assert (
         actual_prompt == expected_prompt
@@ -70,9 +78,9 @@ def test_build_prompt_with_relative_file_path():
 
         system_prompt = "System prompt"
         user_prompt = f"User prompt with file path: {relative_name}"
-
-        expected_prompt = f"System prompt\n\nUser prompt with file path: {relative_name}\n\n--- {relative_name}\n\nThis is a file from the prompt."
-        actual_prompt = build_prompt(system_prompt, user_prompt)
+        function_definitions = "This is a function definition."
+        expected_prompt = f"System prompt\n\nUser prompt with file path: {relative_name}\n\nThis is a function definition.\n\n--- {relative_name}\n\nThis is a file from the prompt."
+        actual_prompt = build_prompt(system_prompt, user_prompt, function_definitions)
 
         assert (
             actual_prompt == expected_prompt
@@ -129,3 +137,21 @@ def test_fetch_system_prompt_file_not_found(monkeypatch):
             \tnon_existent_prompt.txt
             \t#{tmpdir}/.ghost/non_existent_prompt.txt
             \t#{tmpdir}/.ghost/non_existent_prompt.txt"""
+
+
+def test_extract_paths_multiple_paths():
+    text = "Here are some paths: /path/to/file.py, ./src/cli.py, and src/utils.py"
+    matches = extract_paths(text)
+    assert matches == ["/path/to/file.py", "./src/cli.py", "src/utils.py"]
+
+
+def test_extract_paths_single_path():
+    text = "refactor /path/to/file.py"
+    matches = extract_paths(text)
+    assert matches == ["/path/to/file.py"]
+
+
+def test_extract_paths_no_path():
+    text = "There are no paths here."
+    matches = extract_paths(text)
+    assert matches == []

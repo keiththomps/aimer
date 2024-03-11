@@ -9,6 +9,7 @@ import sys
 import click
 
 from .prompts import build_system_prompt, fetch_system_prompt
+from .ai_providers import get_provider
 
 
 @click.group(invoke_without_command=True)
@@ -27,11 +28,14 @@ def cli(ctx):
     "--ai",
     "-a",
     type=click.Choice(["OpenAI", "Anthropic"], case_sensitive=False),
-    default="OpenAI",
+    default="Anthropic",
     help="AI Provider.",
 )
 @click.option(
-    "--model", "-m", default="gpt-4-turbo", help="Large language model to use."
+    "--model",
+    "-m",
+    default="claude-3-opus-20240229",
+    help="Large language model to use.",
 )
 @click.option("--dry-run", "-d", is_flag=True, help="Dry run mode.")
 @click.option("--output", "-o", default=None, help="Output file.")
@@ -49,6 +53,10 @@ def write(ai, model, dry_run, output, system_prompt, prompt, files):
         click.echo(f"Error: {e}")
         click.echo("Consider running `ghost config` to create a default prompt.")
         sys.exit(1)
+
+    provider = get_provider(ai, model)
+    result = provider.send_message(prompt_start, prompt, files)
+    print(result)
 
 
 @cli.command()

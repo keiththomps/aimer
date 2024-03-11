@@ -1,0 +1,48 @@
+<tool_description>
+<tool_name>update_file</tool_name>
+<description>
+Updates a file's contents. Receives the new contents for the entire file.
+If the file does not exist, it will be created.
+The function is a void function, so it does not return a value.
+</description>
+<parameters>
+<parameter>
+<name>file_path</name>
+<type>string</type>
+<description>The path to the file to be updated.</description>
+</parameter>
+<parameter>
+<name>contents</name>
+<type>string</type>
+<description>The updated contents of the file</description>
+</parameter>
+</tool_description>
+
+<tool_description>
+<tool_name>delete_file</tool_name>
+<description>
+Delete a file on the local file system.
+Receive the file path to be deleted as a parameter.
+The funciton is a void function, so it does not return a value.
+</description>
+<parameters>
+<parameter>
+<name>file_path</name>
+<type>string</type>
+<description>The path to the file to be deleted.</description>
+</parameter>
+</tool_description>
+
+<tool_description>
+<tool_name>inquire_about_file</tool_name>
+<description>
+Requests data from a file if it exists. Takes a file path as a parameter.
+The function returns a tuple of (True, file contents as a string>) if it exists or (False, empty string) if the file does not exist.
+</description>
+<parameters>
+<parameter>
+<name>file_path</name>
+<type>string</type>
+<description>The path to inquire about</description>
+</parameter>
+</tool_description>
