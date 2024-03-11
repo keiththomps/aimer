@@ -119,18 +119,14 @@ def fetch_system_prompt(prompt_name: str) -> str:
 
 
 def build_prompt(
-    system_prompt: str,
     user_prompt: str,
-    function_definitions: str,
     files: Optional[list] = None,
 ) -> str:
     """
     Builds a prompt by combining the system prompt, user prompt, and contents of specified files.
 
     Args:
-        system_prompt (str): The system prompt text.
         user_prompt (str): The user prompt text.
-        function_definitions (str): The function definitions to include in the prompt.
         files (list, optional): A list of file paths to include in the prompt. Defaults to [].
 
     Returns:
@@ -140,7 +136,7 @@ def build_prompt(
     regular expression pattern. It then reads the contents of the files specified
     in `files` and the extracted file paths. The file contents are appended to the
     prompt with a separator (--- file_path) for each file. Finally, the function
-    combines the `system_prompt`, `user_prompt`, and file contents into a single string.
+    combines the `user_prompt` and file contents into a single string.
     """
     files = files or []
     file_paths = extract_paths(user_prompt)
@@ -150,14 +146,7 @@ def build_prompt(
         with open(file_path, "r", encoding="utf-8") as file:
             file_contents.append(f"\n\n--- {file_path}\n\n{file.read()}")
 
-    prompt = (
-        system_prompt
-        + "\n\n"
-        + user_prompt
-        + "\n\n"
-        + function_definitions
-        + "".join(file_contents)
-    )
+    prompt = user_prompt + "".join(file_contents)
 
     return prompt
 

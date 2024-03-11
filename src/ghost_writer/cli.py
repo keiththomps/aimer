@@ -34,7 +34,6 @@ def cli(ctx):
 @click.option(
     "--model",
     "-m",
-    default="claude-3-opus-20240229",
     help="Large language model to use.",
 )
 @click.option("--dry-run", "-d", is_flag=True, help="Dry run mode.")

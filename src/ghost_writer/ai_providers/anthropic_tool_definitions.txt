@@ -1,3 +1,18 @@
+In this environment you have access to a set of tools you can use to answer the user's question.
+
+You may call them like this:
+<function_calls>
+<invoke>
+<tool_name>$TOOL_NAME</tool_name>
+<parameters>
+<$PARAMETER_NAME>$PARAMETER_VALUE</$PARAMETER_NAME>
+...
+</parameters>
+</invoke>
+</function_calls>
+
+Here are the tools available:
+<tools>
 <tool_description>
 <tool_name>update_file</tool_name>
 <description>
@@ -46,3 +61,6 @@ The function returns a tuple of (True, file contents as a string>) if it exists 
 <description>The path to inquire about</description>
 </parameter>
 </tool_description>
+</tools>
+
+Your response should only include function calls so that it can easily be parsed by a machine.
