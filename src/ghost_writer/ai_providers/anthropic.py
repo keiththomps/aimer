@@ -1,6 +1,7 @@
 import json
 import os
 from typing import List, Optional
+from xml.etree import ElementTree as ET
 
 from anthropic import Anthropic
 
@@ -46,8 +47,9 @@ class AnthropicProvider(AIProvider):
         self.messages.append({"role": "assistant", "content": content})
 
         function_calls = self.extract_function_calls(content)
+        functions = self.parse_function_calls(function_calls)
 
-        return function_calls
+        return functions
 
     def available_models(self) -> List[str]:
         return ["claude-3-sonnet-20240229", "claude-3-opus-20240229"]
@@ -63,3 +65,17 @@ class AnthropicProvider(AIProvider):
         call_start = content.find("<function_calls>")
         call_end = content.find("</function_calls>") + len("</function_calls>")
         return content[call_start:call_end]
+
+    def parse_function_calls(self, function_calls: str) -> List[dict]:
+        function_calls = ET.fromstring(function_calls)
+        data = []
+        for invocation in function_calls.findall('invoke'):
+            invoke_data = {'kwargs': {}}
+            for child in invocation:
+                if child.tag == 'tool_name':
+                    invoke_data['function'] = child.text
+                elif child.tag == 'parameters':
+                    for param in child:
+                        invoke_data['kwargs'][param.tag] = param.text
+            data.append(invoke_data)
+        return data
