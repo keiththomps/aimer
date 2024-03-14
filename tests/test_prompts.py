@@ -48,14 +48,12 @@ def test_build_prompt_with_multiple_files():
         temp2.write(b"This is a file path passed in.")
         temp2_name = temp2.name
 
-    system_prompt = "System prompt"
     user_prompt = f"User prompt with file path: {temp1_name}"
-    function_definitions = "This is a function definition."
     files = [temp2_name]
 
-    expected_prompt = f"System prompt\n\nUser prompt with file path: {temp1_name}\n\nThis is a function definition.\n\n--- {temp1_name}\n\nThis is a file from the prompt.\n\n--- {temp2_name}\n\nThis is a file path passed in."
+    expected_prompt = f"User prompt with file path: {temp1_name}\n\n--- {temp1_name}\n\nThis is a file from the prompt.\n\n--- {temp2_name}\n\nThis is a file path passed in."
     actual_prompt = build_prompt(
-        system_prompt, user_prompt, function_definitions, files
+        user_prompt, files
     )
 
     assert (
@@ -76,11 +74,9 @@ def test_build_prompt_with_relative_file_path():
 
         os.chdir(tmpdir)
 
-        system_prompt = "System prompt"
         user_prompt = f"User prompt with file path: {relative_name}"
-        function_definitions = "This is a function definition."
-        expected_prompt = f"System prompt\n\nUser prompt with file path: {relative_name}\n\nThis is a function definition.\n\n--- {relative_name}\n\nThis is a file from the prompt."
-        actual_prompt = build_prompt(system_prompt, user_prompt, function_definitions)
+        expected_prompt = f"User prompt with file path: {relative_name}\n\n--- {relative_name}\n\nThis is a file from the prompt."
+        actual_prompt = build_prompt(user_prompt)
 
         assert (
             actual_prompt == expected_prompt
