@@ -20,7 +20,7 @@ def test_config_command(monkeypatch):
 
     with TemporaryDirectory() as temp_dir:
         os.chdir(temp_dir)
-        result = runner.invoke(cli, ["config"])
+        result = runner.invoke(cli, ["--config"])
         assert result.exit_code == 0
 
         # Check if the prompt file was created
