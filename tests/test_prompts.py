@@ -52,9 +52,7 @@ def test_build_prompt_with_multiple_files():
     files = [temp2_name]
 
     expected_prompt = f"User prompt with file path: {temp1_name}\n\n--- {temp1_name}\n\nThis is a file from the prompt.\n\n--- {temp2_name}\n\nThis is a file path passed in."
-    actual_prompt = build_prompt(
-        user_prompt, files
-    )
+    actual_prompt = build_prompt(user_prompt, files)
 
     assert (
         actual_prompt == expected_prompt

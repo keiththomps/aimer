@@ -25,7 +25,7 @@ class AnthropicProvider(AIProvider):
 
     def send_message(
         self, system_prompt: str, user_prompt: str, files: List[str] = []
-    ) -> str:
+    ) -> List[dict]:
         # Implementation to send the prompt to Anthropic API and receive a response
         self.messages.append(
             {
@@ -36,11 +36,11 @@ class AnthropicProvider(AIProvider):
 
         print(f"Sending message {json.dumps(self.messages, indent=2)}")
         message = self.client.messages.create(
-                max_tokens=2048,
-                system=f"{system_prompt}\n{self.tool_definitions}",
-                messages=self.messages,
-                model=self.model,
-                )
+            max_tokens=2048,
+            system=f"{system_prompt}\n{self.tool_definitions}",
+            messages=self.messages,
+            model=self.model,
+        )
 
         content = message.content[0].text
 
@@ -69,13 +69,13 @@ class AnthropicProvider(AIProvider):
     def parse_function_calls(self, function_calls: str) -> List[dict]:
         function_calls = ET.fromstring(function_calls)
         data = []
-        for invocation in function_calls.findall('invoke'):
-            invoke_data = {'kwargs': {}}
+        for invocation in function_calls.findall("invoke"):
+            invoke_data = {"kwargs": {}}
             for child in invocation:
-                if child.tag == 'tool_name':
-                    invoke_data['function'] = child.text
-                elif child.tag == 'parameters':
+                if child.tag == "tool_name":
+                    invoke_data["function"] = child.text
+                elif child.tag == "parameters":
                     for param in child:
-                        invoke_data['kwargs'][param.tag] = param.text
+                        invoke_data["kwargs"][param.tag] = param.text
             data.append(invoke_data)
         return data
