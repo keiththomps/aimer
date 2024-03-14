@@ -1,0 +1,31 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "updateFile",
+      "description": "Updates a file's contents. Includes the new contents for the entire file.\nIf the file does not exist, it will be created.\nThe function is a void function, so it does not return a value.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "file_path": { "type": "string", "description": "The path to the file to update." },
+          "contents": { "type": "string", "description": "The new contents of the file." }
+        },
+        "required": ["file_path", "contents"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "deleteFile",
+      "description": "Delete a file on the local file system.\nReceive the file path to be deleted as a parameter.\nThe funciton is a void function, so it does not return a value.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "file_path": { "type": "string", "description": "The path to the file to update." }
+        },
+        "required": ["file_path"]
+      }
+    }
+  }
+]

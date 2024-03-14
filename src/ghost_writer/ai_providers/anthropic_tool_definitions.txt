@@ -16,7 +16,7 @@ Here are the tools available:
 <tool_description>
 <tool_name>updateFile</tool_name>
 <description>
-Updates a file's contents. Receives the new contents for the entire file.
+Updates a file's contents. Includes the new contents for the entire file.
 If the file does not exist, it will be created.
 The function is a void function, so it does not return a value.
 </description>

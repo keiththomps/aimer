@@ -19,7 +19,7 @@ from .ai_providers import get_provider
     "--ai",
     "-a",
     type=click.Choice(["OpenAI", "Anthropic"], case_sensitive=False),
-    default="Anthropic",
+    default="OpenAI",
     help="AI Provider.",
 )
 @click.option(
