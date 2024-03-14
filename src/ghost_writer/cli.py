@@ -54,8 +54,8 @@ def write(ai, model, dry_run, output, system_prompt, prompt, files):
         sys.exit(1)
 
     provider = get_provider(ai, model)
-    result = provider.send_message(prompt_start, prompt, files)
-    print(result)
+    functions = provider.send_message(prompt_start, prompt, files)
+    print(functions)
 
 
 @cli.command()
