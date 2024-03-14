@@ -1,13 +1,16 @@
 from abc import ABC, abstractmethod
 from typing import List
 
+
 class AIProvider(ABC):
     """
     Abstract base class for AI providers.
     """
 
     @abstractmethod
-    def send_message(self, system_prompt: str, user_prompt: str, files: List[str] = []) -> str:
+    def send_message(
+        self, system_prompt: str, user_prompt: str, files: List[str] = []
+    ) -> str:
         """
         Send a message to the AI provider and receive a response.
 

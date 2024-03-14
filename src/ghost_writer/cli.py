@@ -9,50 +9,82 @@ import sys
 import click
 
 from .prompts import build_system_prompt, fetch_system_prompt
+from .ai_providers import get_provider
 
 
-@click.group(invoke_without_command=True)
-@click.pass_context
-def cli(ctx):
-    """
-    Ghost writer leverages LLMs function calling capability to allow AI to write
-    code for you based on a prompt while leveraging context from files that you provide.
-    """
-    if ctx.invoked_subcommand is None:
-        ctx.invoke(write)
-
-
-@cli.command()
+@click.command()
+@click.option("--config", is_flag=True, help="Run the configuration steps.")
 @click.option(
     "--ai",
     "-a",
     type=click.Choice(["OpenAI", "Anthropic"], case_sensitive=False),
-    default="OpenAI",
+    default="Anthropic",
     help="AI Provider.",
 )
 @click.option(
-    "--model", "-m", default="gpt-4-turbo", help="Large language model to use."
+    "--model",
+    "-m",
+    help="Large language model to use.",
 )
 @click.option("--dry-run", "-d", is_flag=True, help="Dry run mode.")
 @click.option("--output", "-o", default=None, help="Output file.")
 @click.option("--system-prompt", "-s", help="Custom system prompt to use.")
-@click.argument("prompt", nargs=1)
+@click.argument("prompt", required=False, type=str)
+@click.argument("files", nargs=-1)
+@click.pass_context
+def cli(ctx, config, ai, model, dry_run, output, system_prompt, prompt, files):
+    """
+    Ghost writer leverages LLMs function calling capability to allow AI to write
+    code for you based on a prompt while leveraging context from files that you provide.
+    """
+    if config:
+        ctx.invoke(configure)
+    else:
+        ctx.invoke(write)
+
+
+@click.command()
+@click.pass_context
+@click.option(
+    "--ai",
+    "-a",
+    type=click.Choice(["OpenAI", "Anthropic"], case_sensitive=False),
+    default="Anthropic",
+    help="AI Provider.",
+)
+@click.option(
+    "--model",
+    "-m",
+    help="Large language model to use.",
+)
+@click.option("--dry-run", "-d", is_flag=True, help="Dry run mode.")
+@click.option("--output", "-o", default=None, help="Output file.")
+@click.option("--system-prompt", "-s", help="Custom system prompt to use.")
+@click.argument("prompt", required=True, type=str)
 @click.argument("files", nargs=-1)
 # pylint: disable=too-many-arguments
-def write(ai, model, dry_run, output, system_prompt, prompt, files):
+def write(ctx, ai, model, dry_run, output, system_prompt, prompt, files):
     """
     [Default Command] Perform code actions based on a prompt.
     """
+    if not prompt:
+        click.echo("Error: A prompt is required.")
+        sys.exit(1)
     try:
         prompt_start = fetch_system_prompt(system_prompt)
     except FileNotFoundError as e:
         click.echo(f"Error: {e}")
-        click.echo("Consider running `ghost config` to create a default prompt.")
+        click.echo("Consider running `ghost --config` to create a default prompt.")
         sys.exit(1)
 
+    provider = get_provider(ai, model)
+    functions = provider.send_message(prompt_start, prompt, files)
+    print(functions)
 
-@cli.command()
-def config():
+
+@click.command()
+@click.pass_context
+def configure(_ctx):
     """
     Interactive multi-step process to build an LLM prompt.
     """
@@ -117,4 +149,4 @@ def config():
 
 
 if __name__ == "__main__":
-    cli()  # pylint: disable=no-value-for-parameter
+    cli(obj={})  # pylint: disable=no-value-for-parameter

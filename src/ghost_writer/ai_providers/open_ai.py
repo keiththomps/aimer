@@ -2,8 +2,11 @@ from typing import List
 
 from .base import AIProvider
 
+
 class OpenAIProvider(AIProvider):
-    def send_message(self, system_prompt: str, user_prompt: str, files: List[str] = []) -> str:
+    def send_message(
+        self, system_prompt: str, user_prompt: str, files: List[str] = []
+    ) -> str:
         # Implementation to send the prompt to OpenAI API and receive a response
         return "OpenAI response"
 

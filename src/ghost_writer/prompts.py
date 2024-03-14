@@ -119,13 +119,13 @@ def fetch_system_prompt(prompt_name: str) -> str:
 
 
 def build_prompt(
-    system_prompt: str, user_prompt: str, files: Optional[list] = None
+    user_prompt: str,
+    files: Optional[list] = None,
 ) -> str:
     """
     Builds a prompt by combining the system prompt, user prompt, and contents of specified files.
 
     Args:
-        system_prompt (str): The system prompt text.
         user_prompt (str): The user prompt text.
         files (list, optional): A list of file paths to include in the prompt. Defaults to [].
 
@@ -136,16 +136,31 @@ def build_prompt(
     regular expression pattern. It then reads the contents of the files specified
     in `files` and the extracted file paths. The file contents are appended to the
     prompt with a separator (--- file_path) for each file. Finally, the function
-    combines the `system_prompt`, `user_prompt`, and file contents into a single string.
+    combines the `user_prompt` and file contents into a single string.
     """
     files = files or []
-    file_paths = re.findall(r"(?:/[\w._-]+)+\b", user_prompt)
+    file_paths = extract_paths(user_prompt)
 
     file_contents = []
     for file_path in file_paths + files:
         with open(file_path, "r", encoding="utf-8") as file:
             file_contents.append(f"\n\n--- {file_path}\n\n{file.read()}")
 
-    prompt = system_prompt + "\n\n" + user_prompt + "".join(file_contents)
+    prompt = user_prompt + "".join(file_contents)
 
     return prompt
+
+
+def extract_paths(text):
+    words = text.split()
+    paths = []
+
+    for word in words:
+        # Remove trailing punctuation that might be attached to paths
+        trimmed_word = word.rstrip(",.?!")
+
+        # Simple heuristic to identify potential paths
+        if "/" in trimmed_word or trimmed_word.startswith("."):
+            paths.append(trimmed_word)
+
+    return paths
