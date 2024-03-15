@@ -8,6 +8,7 @@ import sys
 
 import click
 
+from .executor import Executor
 from .prompts import build_system_prompt, fetch_system_prompt
 from .ai_providers import get_provider
 
@@ -29,10 +30,11 @@ from .ai_providers import get_provider
 @click.option("--dry-run", "-d", is_flag=True, help="Dry run mode.")
 @click.option("--output", "-o", default=None, help="Output file.")
 @click.option("--system-prompt", "-s", help="Custom system prompt to use.")
+@click.option("--yolo", is_flag=True, default=False, help="Skip confirmations.")
 @click.argument("prompt", required=False, type=str)
 @click.argument("files", nargs=-1)
 @click.pass_context
-def cli(ctx, config, ai, model, dry_run, output, system_prompt, prompt, files):
+def cli(ctx, config, ai, model, dry_run, output, yolo, system_prompt, prompt, files):
     """
     Ghost writer leverages LLMs function calling capability to allow AI to write
     code for you based on a prompt while leveraging context from files that you provide.
@@ -61,10 +63,11 @@ def cli(ctx, config, ai, model, dry_run, output, system_prompt, prompt, files):
 @click.option("--dry-run", "-d", is_flag=True, help="Dry run mode.")
 @click.option("--output", "-o", default=None, help="Output file.")
 @click.option("--system-prompt", "-s", help="Custom system prompt to use.")
+@click.option("--yolo", is_flag=True, default=False, help="Skip confirmations.")
 @click.argument("prompt", required=True, type=str)
 @click.argument("files", nargs=-1)
 # pylint: disable=too-many-arguments
-def write(ctx, config, ai, model, dry_run, output, system_prompt, prompt, files):
+def write(ctx, config, ai, model, dry_run, output, yolo, system_prompt, prompt, files):
     """
     [Default Command] Perform code actions based on a prompt.
     """
@@ -80,7 +83,8 @@ def write(ctx, config, ai, model, dry_run, output, system_prompt, prompt, files)
 
     provider = get_provider(ai, model)
     functions = provider.send_message(prompt_start, prompt, files)
-    print(functions)
+    executor = Executor(functions)
+    executor.execute(confirm=not yolo)
 
 
 @click.command()

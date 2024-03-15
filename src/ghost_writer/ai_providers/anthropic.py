@@ -34,9 +34,11 @@ class AnthropicProvider(AIProvider):
             }
         )
 
-        print(f"Sending message {json.dumps(self.messages, indent=2)}")
+        if os.getenv("DEBUG"):
+            print(f"Sending message {json.dumps(self.messages, indent=2)}")
+
         message = self.client.messages.create(
-            max_tokens=2048,
+            max_tokens=4096,  # Max allowed by Claude 3
             system=f"{system_prompt}\n{self.tool_definitions}",
             messages=self.messages,
             model=self.model,
@@ -81,7 +83,7 @@ class AnthropicProvider(AIProvider):
             invoke_data = {"kwargs": {}}
             for child in invocation:
                 if child.tag == "tool_name":
-                    invoke_data["function"] = child.text
+                    invoke_data["name"] = child.text
                 elif child.tag == "parameters":
                     for param in child:
                         invoke_data["kwargs"][param.tag] = param.text
