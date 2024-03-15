@@ -52,7 +52,11 @@ class AnthropicProvider(AIProvider):
         return functions
 
     def available_models(self) -> List[str]:
-        return ["claude-3-sonnet-20240229", "claude-3-opus-20240229"]
+        return [
+            "claude-3-haiku-20240307",
+            "claude-3-sonnet-20240229",
+            "claude-3-opus-20240229",
+        ]
 
     def read_tool_definitions(self) -> str:
         def_path = os.path.join(
