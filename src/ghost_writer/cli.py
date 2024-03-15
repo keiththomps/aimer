@@ -40,11 +40,12 @@ def cli(ctx, config, ai, model, dry_run, output, system_prompt, prompt, files):
     if config:
         ctx.invoke(configure)
     else:
-        ctx.invoke(write)
+        ctx.forward(write)
 
 
 @click.command()
 @click.pass_context
+@click.option("--config", is_flag=True, help="Run the configuration steps.")
 @click.option(
     "--ai",
     "-a",
@@ -63,7 +64,7 @@ def cli(ctx, config, ai, model, dry_run, output, system_prompt, prompt, files):
 @click.argument("prompt", required=True, type=str)
 @click.argument("files", nargs=-1)
 # pylint: disable=too-many-arguments
-def write(ctx, ai, model, dry_run, output, system_prompt, prompt, files):
+def write(ctx, config, ai, model, dry_run, output, system_prompt, prompt, files):
     """
     [Default Command] Perform code actions based on a prompt.
     """

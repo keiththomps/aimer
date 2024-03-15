@@ -71,7 +71,11 @@ class AnthropicProvider(AIProvider):
         return content[call_start:call_end]
 
     def parse_function_calls(self, function_calls: str) -> List[dict]:
-        function_calls = ET.fromstring(function_calls)
+        try:
+            function_calls = ET.fromstring(function_calls)
+        except ET.ParseError:
+            print(f"Could not parse function calls {function_calls}")
+            return []
         data = []
         for invocation in function_calls.findall("invoke"):
             invoke_data = {"kwargs": {}}
