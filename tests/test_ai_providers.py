@@ -27,4 +27,10 @@ def test_openai_provider_available_models():
 def test_anthropic_provider_available_models():
     provider = AnthropicProvider(api_key=None, base_url=None, model=None)
     models = provider.available_models()
-    assert set(models) == set(["claude-3-sonnet-20240229", "claude-3-opus-20240229"])
+    assert set(models) == set(
+        [
+            "claude-3-haiku-20240307",
+            "claude-3-sonnet-20240229",
+            "claude-3-opus-20240229",
+        ]
+    )
