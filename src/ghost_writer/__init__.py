@@ -1,5 +1,5 @@
 """
-Ghost Writer : A tool to help you write better code.
+Ghost Writer : A tool to help you let AI write code for you.
 """
 
 from . import ai_providers
