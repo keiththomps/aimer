@@ -5,7 +5,7 @@ from .anthropic import AnthropicProvider
 
 def get_provider(provider: str, model: str) -> AIProvider:
     if provider.lower() == "openai":
-        return OpenAIProvider(None, model)
+        return OpenAIProvider(None, None, model)
     elif provider.lower() == "anthropic":
         return AnthropicProvider(None, None, model)
     else:
