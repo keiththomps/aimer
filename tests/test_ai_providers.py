@@ -1,6 +1,6 @@
 import pytest
 
-from ghost_writer.ai_providers import AIProvider, OpenAIProvider, AnthropicProvider
+from aimer.ai_providers import AIProvider, OpenAIProvider, AnthropicProvider
 
 
 def test_ai_provider_cannot_be_instantiated():

@@ -3,7 +3,7 @@ requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "ghost_writer"
+name = "aimer"
 authors = [{name = "Keith Thompson", email = "keiththomps@hey.com"}]
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -22,12 +22,12 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/keiththomps/ghost_writer"
-Source = "https://github.com/keiththomps/ghost_writer"
-Issues = "https://github.com/keiththomps/ghost_writer/issues"
+Homepage = "https://github.com/keiththomps/aimer"
+Source = "https://github.com/keiththomps/aimer"
+Issues = "https://github.com/keiththomps/aimer/issues"
 
 [project.scripts]
-ghost = "ghost_writer:cli.cli"
+aimer = "aimer:cli.cli"
 
 [project.optional-dependencies]
 dev = ["pytest", "black", "mypy", "pylint"]

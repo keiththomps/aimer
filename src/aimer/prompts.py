@@ -67,7 +67,7 @@ def fetch_system_prompt(prompt_name: str) -> str:
 
     Raises:
         FileNotFoundError: If the file is not found in the specified path,
-        './.ghost/', or '~/.ghost/'.
+        './.aimer/', or '~/.aimer/'.
     """
     # Check if the prompt_name has an extension
     prompt_name = prompt_name or "default_prompt.txt"
@@ -85,8 +85,8 @@ def fetch_system_prompt(prompt_name: str) -> str:
         except FileNotFoundError:
             pass
 
-    # Check in the local '.ghost' directory
-    local_prompt_file = Path(os.getcwd(), ".ghost", prompt_file_name)
+    # Check in the local '.aimer' directory
+    local_prompt_file = Path(os.getcwd(), ".aimer", prompt_file_name)
     if local_prompt_file.is_file():
         try:
             with open(local_prompt_file, "r", encoding="utf-8") as file:
@@ -95,8 +95,8 @@ def fetch_system_prompt(prompt_name: str) -> str:
         except FileNotFoundError:
             pass
 
-    # Check in the user's '~/.ghost' directory
-    home_prompt_file = Path(Path.home(), ".ghost", prompt_file_name)
+    # Check in the user's '~/.aimer' directory
+    home_prompt_file = Path(Path.home(), ".aimer", prompt_file_name)
     if home_prompt_file.is_file():
         try:
             with open(home_prompt_file, "r", encoding="utf-8") as file:

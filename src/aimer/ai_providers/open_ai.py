@@ -6,7 +6,7 @@ from typing import List, Optional
 
 from openai import OpenAI
 
-from ghost_writer.prompts import build_prompt
+from aimer.prompts import build_prompt
 from .base import AIProvider
 
 

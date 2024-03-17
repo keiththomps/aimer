@@ -1,5 +1,5 @@
 """
-Entrypoint for Ghost Writer, responsible for the CLI commands
+Entrypoint for Aimer, responsible for the CLI commands
 and handling user input.
 """
 
@@ -34,7 +34,7 @@ from .ai_providers import get_provider
 @click.pass_context
 def cli(ctx, config, ai, model, yolo, system_prompt, prompt, files):
     """
-    Ghost writer leverages LLMs function calling capability to allow AI to write
+    Aimer leverages LLMs function calling capability to allow AI to write
     code for you based on a prompt while leveraging context from files that you provide.
     """
     if config:
@@ -74,7 +74,7 @@ def write(ctx, config, ai, model, yolo, system_prompt, prompt, files):
         prompt_start = fetch_system_prompt(system_prompt)
     except FileNotFoundError as e:
         click.echo(f"Error: {e}")
-        click.echo("Consider running `ghost --config` to create a default prompt.")
+        click.echo("Consider running `aimer --config` to create a default prompt.")
         sys.exit(1)
 
     provider = get_provider(ai, model)
@@ -139,7 +139,7 @@ def configure(_ctx):
 
     confirm = click.confirm("\nDo you want to save this prompt?", default=True)
     if confirm:
-        prompt_dir = os.path.join(os.getcwd(), ".ghost")
+        prompt_dir = os.path.join(os.getcwd(), ".aimer")
         os.makedirs(prompt_dir, exist_ok=True)
         prompt_file = os.path.join(prompt_dir, "default_prompt.txt")
         with open(prompt_file, "w", encoding="utf-8") as f:

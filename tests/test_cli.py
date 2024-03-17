@@ -4,7 +4,7 @@ import os
 from tempfile import TemporaryDirectory
 from click.testing import CliRunner
 
-from ghost_writer.cli import cli
+from aimer.cli import cli
 
 
 def test_config_command(monkeypatch):
@@ -24,5 +24,5 @@ def test_config_command(monkeypatch):
         assert result.exit_code == 0
 
         # Check if the prompt file was created
-        prompt_file = os.path.join(temp_dir, ".ghost", "default_prompt.txt")
+        prompt_file = os.path.join(temp_dir, ".aimer", "default_prompt.txt")
         assert os.path.isfile(prompt_file)

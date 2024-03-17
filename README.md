@@ -1,10 +1,10 @@
-# Ghost Writer
+# Aimer
 
-## How to Use Ghost Writer
+## How to Use Aimer
 
-To use Ghost Writer, you can follow these steps:
-1. Install Ghost Writer by running `pip install ghost-writer`
-2. Run the CLI command `ghost --help` to see the available options
+To use Aimer, you can follow these steps:
+1. Install Aimer by running `pip install aimer`
+2. Run the CLI command `aimer --help` to see the available options
 3. Use the following commands:
-   - `ghost --config` to run the configuration steps
-   - `ghost <prompt> [<files>]` to perform code actions based on a prompt
+   - `aimer --config` to run the configuration steps
+   - `aimer <prompt> [<files>]` to perform code actions based on a prompt

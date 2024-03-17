@@ -4,7 +4,7 @@ from tempfile import NamedTemporaryFile
 
 import pytest
 
-from ghost_writer.executor import DeleteFile, UpdateFile, Inquire, Executor
+from aimer.executor import DeleteFile, UpdateFile, Inquire, Executor
 
 
 def test_delete_file():

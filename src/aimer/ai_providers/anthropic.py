@@ -5,7 +5,7 @@ from xml.etree import ElementTree as ET
 
 from anthropic import Anthropic
 
-from ghost_writer.prompts import build_prompt
+from aimer.prompts import build_prompt
 from .base import AIProvider
 
 

@@ -3,7 +3,7 @@ import pytest
 from pathlib import Path
 from tempfile import TemporaryDirectory, NamedTemporaryFile
 
-from ghost_writer.prompts import (
+from aimer.prompts import (
     build_prompt,
     fetch_system_prompt,
     build_system_prompt,
@@ -95,8 +95,8 @@ def test_fetch_system_prompt_valid_path():
 
 def test_fetch_system_prompt_local_directory():
     with TemporaryDirectory() as tmpdir:
-        os.makedirs(os.path.join(tmpdir, ".ghost"), exist_ok=True)
-        prompt_file = os.path.join(tmpdir, ".ghost", "test_prompt.txt")
+        os.makedirs(os.path.join(tmpdir, ".aimer"), exist_ok=True)
+        prompt_file = os.path.join(tmpdir, ".aimer", "test_prompt.txt")
         with open(prompt_file, "w") as file:
             file.write("This is a test prompt.")
 
@@ -109,8 +109,8 @@ def test_fetch_system_prompt_home_directory(monkeypatch):
     with TemporaryDirectory() as tmpdir:
         os.chdir(tmpdir)  # Change the current working directory
         monkeypatch.setattr("pathlib.Path.home", lambda: Path(tmpdir))
-        os.makedirs(os.path.join(tmpdir, ".ghost"), exist_ok=True)
-        prompt_file = os.path.join(tmpdir, ".ghost", "default_prompt.txt")
+        os.makedirs(os.path.join(tmpdir, ".aimer"), exist_ok=True)
+        prompt_file = os.path.join(tmpdir, ".aimer", "default_prompt.txt")
         with open(prompt_file, "w") as file:
             file.write("This is a test prompt.")
 
@@ -129,8 +129,8 @@ def test_fetch_system_prompt_file_not_found(monkeypatch):
         # The last path is from monkey patching $HOME
         expected_error_message = f"""System prompt file 'non_existent_prompt.txt' not found in the following paths:
             \tnon_existent_prompt.txt
-            \t#{tmpdir}/.ghost/non_existent_prompt.txt
-            \t#{tmpdir}/.ghost/non_existent_prompt.txt"""
+            \t#{tmpdir}/.aimer/non_existent_prompt.txt
+            \t#{tmpdir}/.aimer/non_existent_prompt.txt"""
 
 
 def test_extract_paths_multiple_paths():
